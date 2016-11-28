@@ -71,6 +71,8 @@
           }
 
           function getSongs() {
+// NOTATION: Je pense que tu aurais pu extraire ce bout de code dans une fonction isReady(callback),
+// qui retourne true ou false tout de suite, et qui rappelle callback quand le widget est ready
             if (!isReady) {
               self.widget.bind(SC.Widget.Events.READY, function() {
                 isReady = true;
@@ -94,6 +96,8 @@
 
 
           function updateWidget(){
+// NOTATION: Je pense que tu aurais pu extraire ce bout de code dans une fonction isReady(callback),
+// qui retourne true ou false tout de suite, et qui rappelle callback quand le widget est ready
               if (!isReady) {
                 self.widget.bind(SC.Widget.Events.READY, function() {
                   isReady = true;
@@ -108,6 +112,7 @@
                   }
                 });
               } else if(model.status == 'Paused'){
+// NOTATION: Je pense que dans ce cas si aussi, il faudrait vérifier que le widget est pas déjà en pause
                 self.widget.pause();
               }
               self.widget.getCurrentSoundIndex(function(index) {
@@ -133,6 +138,9 @@
                 break;
               case 'next':
                 self.widget.getSounds(function(sounds) {
+// NOTATION: Tu ne gères pas le cas ou la chanson est changée "toute seule",
+//il faudrait que tu te bind sur SC.Widget.Events.PLAY_PROGRESS — fired periodically while the sound is playing,
+// pour savoir quand une chanson change
                   if(model.songIndex < sounds.length){
                     model.songIndex += 1;
                     model.status = 'Playing';

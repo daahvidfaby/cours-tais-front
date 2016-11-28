@@ -51,6 +51,7 @@
           }
 
           function initListeners() {
+
             $(self.container).find('button').click(function() {
               updateStatus($(this).attr('class'));
               renderModel();
@@ -71,6 +72,8 @@
             self.widget = SC.Widget($(self.container +' iframe')[0]);
           }
 
+// NOTATION: Je pense qu'un meilleure nom pour cette fonction serait updateWidget.
+// setWidget fait penser à un setter dans un langage de classe
           function setWidget() {
             self.widget.bind(SC.Widget.Events.READY, function(){
               if(model.status == 'Playing'){
