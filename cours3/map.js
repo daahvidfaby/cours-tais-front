@@ -10,3 +10,8 @@ function getNames(users){
     return e.nom;
   });
 }
+
+// Version raccourcie
+function getNames(users){
+  return users.map(e => e.nom);
+}
