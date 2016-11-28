@@ -6,85 +6,9 @@
   </head>
   <body>
 
+    <div class="player-container">
 
     <script src="jquery-3.1.1.min.js"></script>
-    <script>
-
-    var Player = (function() {
-
-      var self = {},
-          model = {
-            status: 'Playing',
-            songs: [
-                {artist: "Ray Charles", song: "Georgia On My Mind"},
-                {artist: "Sarah Vaughan", song: "What a Difference a Day Makes"}
-            ],
-            songIndex: 0
-          };
-
-
-          self.init = function(containerName) {
-// NOTATION: Tu n'étais pas obligé de créer tous les éléments enfants, mais c'est très bien !
-            createContainer(containerName);
-            createButtons();
-            createStatus();
-            initListeners();
-          }
-
-          function createContainer(containerName) {
-            $('body').prepend($('<div>').addClass(containerName));
-// NOTATION: Attention : si quelqu'un d'autre crée un objet dont la classe est celle de "containerName", il y aura de gros soucis.
-// Je pense que il aurait mieux valu utiliser une variable qui contiendrait la selection jQuery elle même.
-// C'est à dire faire self.container = $('<div>').addClass(containerName); $('body').prepend(container);
-// et ensuite, dans le code, faire self.container.find('button');
-// #containerName
-            self.container = '.'+containerName;
-          }
-
-          function createButtons() {
-            var play = $('<button>').addClass('play').text('Play'),
-                pause = $('<button>').addClass('pause').text('Pause');
-            $(self.container).append(play, pause);
-          }
-
-          function createStatus() {
-            $(self.container).prepend($('<div>').addClass('status').text('Status : ' +model.status));
-          }
-
-// NOTATION: Fonction bien nommée !
-          function initListeners() {
-            $(self.container).find('button').click(function() {
-// NOTATION: Pas trop fan d'utiliser des classes pour les actions,
-// parce que normalement, on devrait pouvoir ajouter de nouvelles classes à un élément sans changer son comportement
-// (pour faire du style par exemple). Je préfère binder chacun des boutons séparément
-              switch($(this).attr('class')){
-                case 'play':
-                  model.status = 'Playing';
-                  break;
-                case 'pause':
-                  model.status = 'Paused';
-                  break;
-              }
-              renderModel();
-            });
-          }
-
-
-
-          function renderModel() {
-// NOTATION: Attention, ici tu sélectionnes tous les containers à chaque fois (voir remarques #containerName)
-            $(self.container).find('.status').text('Status : ' +model.status);
-          }
-
-          return self;
-    })();
-
-// NOTATION: Mieux encore, j'aurais laissé à l'utilisateur de ta classe le soin de créer le container,
-// et lui fait alors juste : Player.init($('#container')); par exemple
-    Player.init('container');
-
-
-    </script>
-
+    <script src="question1.js"></script>
   </body>
 </html>
