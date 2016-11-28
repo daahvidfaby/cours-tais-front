@@ -65,7 +65,7 @@ var Player = (function() {
     }
 
     function getWidget() {
-        self.widget = SC.Widget($(self.container +' iframe')[0]);
+        self.widget = SC.Widget($container.find('iframe')[0]);
     }
 
     function updateWidget() {
@@ -103,6 +103,8 @@ var Player = (function() {
     }
 
     return self;
-})();
+}());
 
-Player.init($('.player-container'));
+$(document).ready(function() {
+    Player.init($('.player-container'));
+});

@@ -56,6 +56,6 @@ var Player = (function() {
     }
 
     return self;
-})();
+}());
 
 Player.init($('.player-container'));
