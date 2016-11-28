@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Question 1</title>
+  </head>
+  <body>
+
+
+    <script src="jquery-3.1.1.min.js"></script>
+    <script>
+
+    var Player = (function() {
+
+      var self = {},
+          model = {
+            status: 'Playing',
+            songs: [
+                {artist: "Ray Charles", song: "Georgia On My Mind"},
+                {artist: "Sarah Vaughan", song: "What a Difference a Day Makes"}
+            ],
+            songIndex: 0
+          };
+
+
+          self.init = function(containerName) {
+            createContainer(containerName);
+            createButtons();
+            createStatus();
+            initListeners();
+          }
+
+          function createContainer(containerName) {
+            $('body').prepend($('<div>').addClass(containerName));
+            self.container = '.'+containerName;
+          }
+
+          function createButtons() {
+            var play = $('<button>').addClass('play').text('Play'),
+                pause = $('<button>').addClass('pause').text('Pause');
+            $(self.container).append(play, pause);
+          }
+
+          function createStatus() {
+            $(self.container).prepend($('<div>').addClass('status').text('Status : ' +model.status));
+          }
+
+          function initListeners() {
+            $(self.container).find('button').click(function() {
+              switch($(this).attr('class')){
+                case 'play':
+                  model.status = 'Playing';
+                  break;
+                case 'pause':
+                  model.status = 'Paused';
+                  break;
+              }
+              renderModel();
+            });
+          }
+
+
+
+          function renderModel() {
+            $(self.container).find('.status').text('Status : ' +model.status);
+          }
+
+          return self;
+    })();
+
+    Player.init('container');
+
+
+    </script>
+
+  </body>
+</html>

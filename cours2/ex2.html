@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+
+</head>
+<body>
+
+	<script src="jquery-3.1.1.min.js"></script>
+	<script>
+		function showBox(selector) {
+			var element = $(selector);
+			element.css({
+					'display':'block',
+					'border':'1px solid #000'
+			});
+
+			var button = $('<button>')
+				.text('X')
+				.click(function(){
+					element.fadeOut(600);
+				})
+
+			element.prepend(button);
+		}
+
+		function addBox(text){
+			var element = $('<div></div>').text(text);
+			$('body').prepend(element);
+			showBox(element);
+		}
+
+
+		$('body')
+			.append($('<button>')
+			.text('Add button')
+			.click(function(){
+				addBox('My SUPER box');
+		}));
+
+	</script>
+</body>
+</html>

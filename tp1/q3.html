@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+        <meta charset="UTF-8">
+        <title>Question 3</title>
+</head>
+<body>
+       
+    <h1>Question 3</h1>
+    Phrase : <input type="text" id="phrase"><br>        
+    <p id="result"></p>
+    <script>
+            
+        var input = document.querySelector('#phrase');
+        document.querySelector("#result").innerHTML= 'Vowels count : 0';    
+        
+        input.onkeyup = function() {
+                countVowels();
+        }
+            
+        function countVowels(){
+                var phrase = document.querySelector('#phrase').value;
+                var vowelsNb = 0;
+                phrase = phrase.split('');
+                phrase.forEach(function(element){
+                        if(!isVowel(element)){
+                                return;
+                        }
+                        vowelsNb++;  
+                });
+
+                document.querySelector("#result").innerHTML= 'Vowels count : ' + vowelsNb;
+        }
+                    
+        function isVowel(letter) {
+                return ['a', 'e', 'i', 'o', 'u', 'y'].indexOf(letter.toLowerCase()) !== -1
+        }
+    </script>
+        
+</body>
+</html>

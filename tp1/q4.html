@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+        <meta charset="UTF-8">
+        <title>Question 4</title>
+</head>
+<body>
+       
+    <h1>Question 4</h1>
+    Number list (separated by ;) <input type="text" id="list"><br>        
+    <p id="result"></p>
+    <script>
+            
+        var input = document.querySelector('#list');    
+        
+        input.onkeyup = function() {
+                average();
+        }
+            
+        function average(){
+                var list = document.querySelector('#list').value;
+                var numbers = list.split(';'),
+                    total = 0;
+                
+                if(numbers[numbers.length-1] == ''){
+                        numbers.pop();
+                }
+                
+                numbers.forEach(function(number){
+                        total += parseInt(number);
+                });
+                
+
+                document.querySelector("#result").innerHTML= 'Count : ' + numbers.length + ', Average : ' + round(total / numbers.length, 2);
+        }
+        
+        function round(value, decimals) {
+                return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+        }
+            
+    </script>
+        
+</body>
+</html>

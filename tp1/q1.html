@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+        <meta charset="UTF-8">
+        <title>Question 1</title>
+</head>
+<body>
+       
+    <h1>Question 1</h1>
+    First number :<input type="text" id="n1"><br>
+    Second number :<input type="text" id="n2"><br>
+    <button onclick="calc('product')">Product</button>
+    <button onclick="calc('divide')">Divide</button>
+    <button onclick="calc('add')">Add</button>
+    <p id="result"></p>
+    <script>
+        function calc(type){
+                var n1 = document.querySelector('#n1');
+                var n2 = document.querySelector('#n2');
+                var a=parseInt(n1.value);
+                var b=parseInt(n2.value);
+                var c;
+                
+                switch (type){
+                        case 'product':   
+                        c = a * b;
+                        break;
+                        case 'divide':   
+                        c = a / b;
+                        break;
+                        case 'add':   
+                        c = a + b;
+                        break;
+                }
+            
+            document.querySelector("#result").innerHTML=round(c, 2);
+        }
+            
+        function round(value, decimals) {
+                return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+        }
+    </script>
+        
+</body>
+</html>

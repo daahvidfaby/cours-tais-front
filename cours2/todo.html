@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>TODO App</title>
+
+</head>
+<body>
+
+	<script src="jquery-3.1.1.min.js"></script>
+	<script>
+
+	$(function() {
+		function showBox(selector) {
+			var element = $(selector);
+			element.css({
+					'display':'block',
+					'border':'1px solid #000'
+			});
+
+
+
+
+		}
+
+
+
+		function addBox(title, url){
+			var element = $('<div></div>').text(title),
+					link = $('<a>').attr('href', url).text('Link').css('padding-left','1rem');
+					element.append(link);
+			$('body').prepend(element);
+			showBox(element);
+		}
+
+
+
+
+
+		var Todo = (function() {
+			var self = {};
+
+			self.init = function() {
+				createForm();
+				getTodos();
+			}
+
+			function createForm() {
+				var form = $('<form>')
+					.append($('<input>'))
+					.submit(function(e){
+						e.preventDefault();
+						Todo.add();
+				});
+
+				$('body').prepend(form);
+			}
+
+			function getTodos() {
+				$.getJSON('https://todo-backend-catalyst.herokuapp.com/', function(data){
+					$.each(data, function(index, todo){
+						console.log(todo);
+					});
+				});
+			}
+
+
+
+
+
+
+			return self;
+		})();
+
+
+
+		Todo.init();
+
+
+	});
+
+	</script>
+</body>
+</html>

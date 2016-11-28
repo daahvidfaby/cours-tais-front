@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Question 2</title>
+  </head>
+  <body>
+
+
+    <script src="jquery-3.1.1.min.js"></script>
+    <script src="api.js"></script>
+
+    <script>
+
+    var Player = (function() {
+
+      var self = {},
+          model = {
+            status: 'Playing',
+            songs: [
+                {artist: "Ray Charles", song: "Georgia On My Mind"},
+                {artist: "Sarah Vaughan", song: "What a Difference a Day Makes"}
+            ],
+            songIndex: 0
+          };
+
+
+          self.init = function(containerName) {
+            createContainer(containerName);
+            createButtons();
+            createStatus();
+            initListeners();
+            initWidget();
+            getWidget();
+            renderModel();
+          }
+
+          function createContainer(containerName) {
+            $('body').prepend($('<div>').addClass(containerName));
+            self.container = '.'+containerName;
+          }
+
+          function createButtons() {
+            var play = $('<button>').addClass('play').text('Play'),
+                pause = $('<button>').addClass('pause').text('Pause');
+            $(self.container).append(play, pause);
+          }
+
+          function createStatus() {
+            $(self.container).prepend($('<div>').addClass('status').text('Status : ' +model.status));
+          }
+
+          function initListeners() {
+            $(self.container).find('button').click(function() {
+              updateStatus($(this).attr('class'));
+              renderModel();
+            });
+          }
+
+          function initWidget() {
+            $(self.container).prepend($('<iframe>').attr({
+               'width':"100%",
+               'height':"450",
+               'scrolling':"no",
+               'frameborder':"no",
+               'src':"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/users/142546852&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"
+            }));
+          }
+
+          function getWidget() {
+            self.widget = SC.Widget($(self.container +' iframe')[0]);
+          }
+
+          function setWidget() {
+            self.widget.bind(SC.Widget.Events.READY, function(){
+              if(model.status == 'Playing'){
+                self.widget.isPaused(function(status) {
+                  if(status === true){
+                    self.widget.play();
+                  }
+                });
+              } else if(model.status == 'Paused'){
+                self.widget.pause();
+              }
+            });
+          }
+
+
+
+          function updateStatus(status) {
+            switch(status){
+              case 'play':
+                model.status = 'Playing';
+                break;
+              case 'pause':
+                model.status = 'Paused';
+                break;
+            }
+          }
+
+          function renderModel() {
+            $(self.container).find('.status').text('Status : ' +model.status);
+            setWidget();
+          }
+
+          return self;
+    })();
+
+    Player.init('container');
+
+
+    </script>
+
+  </body>
+</html>

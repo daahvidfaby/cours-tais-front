@@ -1,0 +1,19 @@
+<html>
+<body>
+    <h1>Multiplication</h1>
+    Enter Number 1:<input type="text" id="a1"><br>
+    Enter Number 2:<input type="text" id="a2"><br>
+    <button onclick="myFunction()">Product</button>
+    <p id="a3"></p>
+    <script>
+        function myFunction(){
+            var a1 = document.querySelector('#a1');
+            var a2 = document.querySelector('#a2');
+            var a=parseInt(a1.value);
+            var b=parseInt(a2.value);
+            var c=a*b;
+            document.querySelector("#a3").innerHTML=c;
+        }
+    </script>
+</body>
+</html>

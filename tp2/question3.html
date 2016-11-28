@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Question 3</title>
+  </head>
+  <body>
+
+
+    <script src="jquery-3.1.1.min.js"></script>
+    <script src="api.js"></script>
+
+    <script>
+
+    var Player = (function() {
+
+      var self = {},
+          model = {
+            status: 'Playing',
+            songs: [],
+            songIndex: 0
+          },
+          isReady = false;
+
+
+          self.init = function(containerName) {
+            createContainer(containerName);
+            createElements();
+            initListeners();
+            initWidget();
+            renderModel();
+          }
+
+          function createContainer(containerName) {
+            $('body').prepend($('<div>').addClass(containerName));
+            self.container = '.'+containerName;
+          }
+
+          function createElements() {
+            var elements = {
+              status: $('<div>').addClass('status').text('Status : ' +model.status),
+              song: $('<div>').addClass('song').text('Chanson : '),
+              play: $('<button>').addClass('play').text('Play'),
+              pause: $('<button>').addClass('pause').text('Pause'),
+              prev: $('<button>').addClass('prev').text('Prev'),
+              next: $('<button>').addClass('next').text('Next'),
+            }
+
+            $.each(elements, function(index, value) {
+              $(self.container).append(value);
+            });
+          }
+
+          function initListeners() {
+            $(self.container).find('button').click(function() {
+              updateModel($(this).attr('class'));
+              renderModel();
+            });
+          }
+
+          function initWidget() {
+            $(self.container).prepend($('<iframe>').attr({
+               'width':"100%",
+               'height':"450",
+               'scrolling':"no",
+               'frameborder':"no",
+               'src':"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/users/142546852&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"
+            }));
+            self.widget = SC.Widget($(self.container +' iframe')[0]);
+            getSongs();
+          }
+
+          function getSongs() {
+            if (!isReady) {
+              self.widget.bind(SC.Widget.Events.READY, function() {
+                isReady = true;
+                getSongs();
+              });
+              return;
+            }
+            self.widget.getSounds(function(sounds) {
+              model.songs = [];
+              $.each(sounds, function(index, sound){
+                model.songs.push({
+                  artist: sound.user.username,
+                  song: sound.title
+                })
+              });
+            });
+            console.log(model);
+          }
+
+
+
+
+          function updateWidget(){
+              if (!isReady) {
+                self.widget.bind(SC.Widget.Events.READY, function() {
+                  isReady = true;
+                  updateWidget();
+                });
+                return;
+              }
+              if(model.status == 'Playing'){
+                self.widget.isPaused(function(status) {
+                  if(status === true){
+                    self.widget.play();
+                  }
+                });
+              } else if(model.status == 'Paused'){
+                self.widget.pause();
+              }
+              self.widget.getCurrentSoundIndex(function(index) {
+                if(index != model.songIndex){
+                  self.widget.skip(model.songIndex);
+                }
+              });
+          }
+
+          function updateModel(type) {
+            switch(type){
+              case 'play':
+                model.status = 'Playing';
+                break;
+              case 'pause':
+                model.status = 'Paused';
+                break;
+              case 'prev':
+                if(model.songIndex > 0){
+                  model.songIndex -= 1;
+                    model.status = 'Playing';
+                }
+                break;
+              case 'next':
+                self.widget.getSounds(function(sounds) {
+                  if(model.songIndex < sounds.length){
+                    model.songIndex += 1;
+                    model.status = 'Playing';
+                  }
+                });
+                break;
+            }
+          }
+
+          function renderModel() {
+            $(self.container).find('.status').text('Status : ' +model.status);
+            $(self.container).find('.song').text('Chanson : ' + model.songs[model.songIndex].artist + ' - ' + model.songs[model.songIndex].song);
+            updateWidget();
+          }
+
+          return self;
+    })();
+
+    Player.init('container');
+
+
+    </script>
+
+  </body>
+</html>

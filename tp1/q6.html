@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+        <meta charset="UTF-8">
+        <title>Question 6</title>
+</head>
+<body>
+       
+        <h1>Question 6</h1>
+
+        <h2>Contacts</h2>
+
+        <div class="contacts">
+
+        </div>
+        
+        
+
+        <script>
+                
+                var Contact = (function(){
+                        var self = {};
+                        
+                        var model = [
+                                {name: "POISSON", surname: "Luc", promotion: 2017}
+                        ];
+                     
+                        
+                        self.init = function(container) {
+                                self.container = container;
+                                createTable();
+                                createForm();
+                                renderModel();
+                        }
+                        
+                        function createTable() {
+                                var contactTable = document.createElement('table');
+                                contactTable.classList = 'contactTable';
+                                contactTable.innerHTML = '<tr><th>Nom</th><th>Prénom</th><th>Promotion</th><th>Action</th></tr>';
+                                document.querySelector(self.container).appendChild(contactTable);
+                        }
+                        
+                        function createForm() {
+                                var contactForm = document.createElement('form'),
+                                    html;
+                                html = '<input type="text" name="name" placeholder="Nom">';
+                                html += '<input type="text" name="surname" placeholder="Prénom">';
+                                html += '<input type="text" name="promotion" placeholder="Promotion">';
+                                html += '<input type="submit" value="Ajouter élève">';
+                                contactForm.classList = 'contactAdd';
+                                contactForm.innerHTML = html;
+                                document.querySelector(self.container).appendChild(contactForm);
+                        }
+                        
+                        self.add = function(form) {
+                                var name =  form.children.name.value.replace(/(<([^>]+)>)/ig,""),
+                                    surname = form.children.surname.value.replace(/(<([^>]+)>)/ig,""),
+                                    promotion = form.children.surname.value.replace(/(<([^>]+)>)/ig,"");
+                                model.push({
+                                        name: name,
+                                        surname: surname,
+                                        promotion: surname
+                                });
+                                form.reset();
+                                renderModel();
+                        }
+                        
+                        self.remove = function(id) {
+                                model.splice(id,1);
+                                renderModel();
+                        }
+                        
+                        function renderModel(){
+                                var contactTable = document.querySelector('.contactTable');
+                                contactTable.innerHTML = '';
+                                model.forEach(function(element, id) {
+                                        var contactLine = document.createElement('tr'),
+                                            html;
+                                        html = '<td>'+element.name+'</td>';
+                                        html += '<td>'+element.surname+'</td>';
+                                        html += '<td>'+element.promotion+'</td>';
+                                        html += '<td><button class="delete" onclick="Contact.remove('+id+')">Supprimer</button></td>';
+                                        contactLine.classList = 'cont_'+id;
+                                        contactLine.innerHTML = html;
+                                        document.querySelector('.contactTable').appendChild(contactLine);
+                                });
+                        }
+
+                        
+                        return self;
+                })();
+                
+
+                Contact.init('.contacts');
+                
+                document.querySelector('.contactAdd').onsubmit = function(e){
+                        e.preventDefault();
+                        Contact.add(e.target);
+                }
+                
+
+        </script>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+
+</head>
+<body>
+
+	<script src="jquery-3.1.1.min.js"></script>
+	<script>
+
+	$(function() {
+		function showBox(selector) {
+			var element = $(selector);
+			element.css({
+					'display':'block',
+					'border':'1px solid #000'
+			});
+
+			var button = $('<button>')
+				.text('X')
+				.click(function(){
+					element.fadeOut(600);
+				})
+
+			element.prepend(button);
+		}
+
+		function addBox(title, url){
+			var element = $('<div></div>').text(title),
+					link = $('<a>').attr('href', url).text('Link').css('padding-left','1rem');
+					element.append(link);
+			$('body').prepend(element);
+			showBox(element);
+		}
+
+		$.getJSON('https://api.github.com/repos/jquery/jquery/issues', function(data){
+			$.each(data, function(id, issue){
+				addBox(issue.title, issue.html_url);
+			});
+		});
+
+
+
+	});
+
+	</script>
+</body>
+</html>
